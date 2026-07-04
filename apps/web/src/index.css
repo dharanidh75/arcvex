@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 5 5 5;
+    --foreground: 255 255 255;
+    --card: 15 15 15;
+    --muted: 26 26 26;
+    --muted-foreground: 163 163 163;
+    --accent: hsl(114, 96%, 76%);
+    --primary: hsl(114, 96%, 76%);
+    --accent-foreground: 0 0 0;
+    --border: 42 42 42;
+    --input: 42 42 42;
+    --ring: hsl(114, 96%, 76%);
+    --destructive: 239 68 68;
+    --radius: 8px;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-[rgb(var(--background)_/_0.6)] backdrop-blur-md border border-white/10;
+  }
+  .glass-light {
+    @apply bg-white/5 backdrop-blur-sm border border-white/5;
+  }
+  .glass-modal {
+    @apply bg-[rgb(var(--background)_/_0.8)] backdrop-blur-xl border border-white/10 shadow-2xl;
+  }
+  .transition-smooth {
+    @apply transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)];
+  }
+  .transition-slow {
+    @apply transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)];
+  }
+  .transition-slower {
+    @apply transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)];
+  }
+  
+  .glow-shadow {
+    box-shadow: 0 0 40px -10px rgba(149, 252, 137, 0.4);
+  }
+}
