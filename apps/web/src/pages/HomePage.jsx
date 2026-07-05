@@ -8,6 +8,7 @@ import ProjectCard from '../components/ProjectCard';
 import ProjectModal from '../components/ProjectModal';
 import HorizontalScrollCarousel from '../components/HorizontalScrollCarousel';
 import SocialIcon from '../components/SocialIcon';
+import { Turnstile } from '@marsidev/react-turnstile';
 
 import video1 from '../assets/video/1.mp4';
 import video2 from '../assets/video/2.mp4';
@@ -15,7 +16,7 @@ import video3 from '../assets/video/3.mp4';
 import video4 from '../assets/video/4.mp4';
 import video5 from '../assets/video/5.mp4';
 import video6 from '../assets/video/6.mp4';
-import heroVideo from '../assets/video/looping.mp4';
+import heroVideo from '../assets/video/looping_seamless.mp4';
 
 // Mock Data
 const services = [
@@ -141,6 +142,51 @@ const projects = [
 export default function HomePage() {
   const [selectedProject, setSelectedProject] = useState(null);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+
+  // Form State
+  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '', captchaToken: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState({ type: '', message: '' });
+  const [turnstileKey, setTurnstileKey] = useState(0);
+
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    setFormData(prev => ({ ...prev, [id]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus({ type: '', message: '' });
+
+    try {
+      // Use environment variable for the API URL, falling back to localhost for local dev
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+      const response = await fetch(`${apiUrl}/contact`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSubmitStatus({ type: 'success', message: 'Message sent successfully!' });
+        setFormData({ name: '', email: '', subject: '', message: '', captchaToken: '' });
+        setTurnstileKey(prev => prev + 1); // Reset the CAPTCHA widget
+      } else {
+        setSubmitStatus({ type: 'error', message: data.detail || 'Failed to send message.' });
+      }
+    } catch (error) {
+      setSubmitStatus({ type: 'error', message: 'An error occurred. Please try again later.' });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <main className="min-h-screen">
@@ -431,13 +477,16 @@ export default function HomePage() {
               className="lg:col-span-7 h-full"
             >
               <div className="bg-card/40 border border-border/50 p-8 md:p-10 rounded-2xl backdrop-blur-sm h-full flex flex-col">
-                <form className="space-y-6 flex flex-col flex-1" onSubmit={(e) => e.preventDefault()}>
+                <form className="space-y-6 flex flex-col flex-1" onSubmit={handleSubmit}>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <label htmlFor="name" className="text-sm font-medium text-white/80">Name</label>
                       <input
                         type="text"
                         id="name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        required
                         className="w-full h-12 px-4 bg-background border border-border/80 rounded-lg text-white focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none focus-visible:border-transparent transition-all"
                         placeholder="John Doe"
                       />
@@ -447,6 +496,9 @@ export default function HomePage() {
                       <input
                         type="email"
                         id="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        required
                         className="w-full h-12 px-4 bg-background border border-border/80 rounded-lg text-white focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none focus-visible:border-transparent transition-all"
                         placeholder="john@example.com"
                       />
@@ -457,6 +509,9 @@ export default function HomePage() {
                     <input
                       type="text"
                       id="subject"
+                      value={formData.subject}
+                      onChange={handleInputChange}
+                      required
                       className="w-full h-12 px-4 bg-background border border-border/80 rounded-lg text-white focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none focus-visible:border-transparent transition-all"
                       placeholder="How can we help?"
                     />
@@ -465,16 +520,50 @@ export default function HomePage() {
                     <label htmlFor="message" className="text-sm font-medium text-white/80">Message</label>
                     <textarea
                       id="message"
+                      value={formData.message}
+                      onChange={handleInputChange}
+                      required
                       className="w-full flex-1 min-h-[120px] p-4 bg-background border border-border/80 rounded-lg text-white focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none focus-visible:border-transparent transition-all resize-none"
                       placeholder="Tell us about your project..."
                     ></textarea>
                   </div>
+
+                  <div className="w-full pt-2 pb-1 flex justify-start">
+                    <div className="overflow-hidden rounded-lg border border-border/40 bg-background/30 p-1 shadow-sm transition-all hover:border-border/80">
+                      <Turnstile
+                        key={turnstileKey}
+                        siteKey="0x4AAAAAADvlDxbG189yGJXi"
+                        options={{
+                          theme: 'dark'
+                        }}
+                        onSuccess={(token) => {
+                          setSubmitStatus({ type: '', message: '' });
+                          setFormData(prev => ({ ...prev, captchaToken: token }));
+                        }}
+                        onError={(errorCode) => {
+                          console.error('Turnstile Error:', errorCode);
+                          setSubmitStatus({ type: 'error', message: `Captcha error: ${errorCode || 'Unknown error'}. Check console or ensure the Site Key allows localhost.` });
+                        }}
+                        onExpire={() => setFormData(prev => ({ ...prev, captchaToken: '' }))}
+                      />
+                    </div>
+                  </div>
+
+                  {submitStatus.message && (
+                    <div className={`p-4 rounded-lg ${submitStatus.type === 'success' ? 'bg-green-500/20 text-green-200' : 'bg-red-500/20 text-red-200'}`}>
+                      {submitStatus.message}
+                    </div>
+                  )}
+
                   <button
                     type="submit"
-                    className="relative overflow-hidden w-full h-12 bg-accent text-accent-foreground font-semibold rounded-lg transition-smooth focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background cursor-pointer group hover:glow-shadow"
+                    disabled={isSubmitting || !formData.captchaToken}
+                    className={`relative overflow-hidden w-full h-12 bg-accent text-accent-foreground font-semibold rounded-lg transition-smooth focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background group hover:glow-shadow ${(isSubmitting || !formData.captchaToken) ? 'opacity-70 cursor-not-allowed' : 'cursor-pointer'}`}
                   >
-                    <span className="absolute inset-0 w-full h-full bg-white origin-left transform scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100"></span>
-                    <span className="relative z-10 group-hover:text-black transition-colors duration-300">Submit</span>
+                    {(!isSubmitting && formData.captchaToken) && <span className="absolute inset-0 w-full h-full bg-white origin-left transform scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100"></span>}
+                    <span className="relative z-10 group-hover:text-black transition-colors duration-300">
+                      {isSubmitting ? 'Submitting...' : 'Submit'}
+                    </span>
                   </button>
                 </form>
               </div>
