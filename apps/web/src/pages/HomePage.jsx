@@ -160,7 +160,8 @@ export default function HomePage() {
     setSubmitStatus({ type: '', message: '' });
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+      const rawApiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+      const apiUrl = rawApiUrl.replace(/\/+$/, ''); // Remove any trailing slashes
       const response = await fetch(`${apiUrl}/contact`, {
         method: 'POST',
         headers: {
