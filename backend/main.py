@@ -21,10 +21,13 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 # Environment Variables
 FRONTEND_URL = os.getenv("FRONTEND_URL", "*")
 
+# Parse comma-separated origins (e.g. "https://arcvex.in,https://www.arcvex.in")
+allowed_origins = [url.strip() for url in FRONTEND_URL.split(",")] if FRONTEND_URL != "*" else ["*"]
+
 # CORS configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=allowed_origins,
     allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
