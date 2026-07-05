@@ -8,6 +8,7 @@ import ProjectCard from '../components/ProjectCard';
 import ProjectModal from '../components/ProjectModal';
 import HorizontalScrollCarousel from '../components/HorizontalScrollCarousel';
 import SocialIcon from '../components/SocialIcon';
+import FAQ from '../components/FAQ';
 import { Turnstile } from '@marsidev/react-turnstile';
 
 import video1 from '../assets/video/1.mp4';
@@ -425,6 +426,9 @@ export default function HomePage() {
           </motion.div>
         </div>
       </section>
+
+      {/* FAQ Section */}
+      <FAQ />
 
       {/* Contact / Footer Section */}
       <section id="contact" className="py-24 bg-background border-t border-border/50 relative overflow-hidden">
