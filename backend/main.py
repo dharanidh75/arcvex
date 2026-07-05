@@ -18,22 +18,25 @@ app = FastAPI()
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
+# Environment Variables
+FRONTEND_URL = os.getenv("FRONTEND_URL", "*")
+
 # CORS configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, replace with your frontend URL (e.g., http://localhost:5173)
+    allow_origins=[FRONTEND_URL] if FRONTEND_URL != "*" else ["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Environment Variables
 WEBHOOK_URL = os.getenv("GOOGLE_SHEETS_WEBHOOK_URL")
 TURNSTILE_SECRET = os.getenv("TURNSTILE_SECRET_KEY")
 
 class ContactForm(BaseModel):
     name: str = Field(..., max_length=100)
     email: EmailStr
+    subject: str = Field(..., max_length=200)
     message: str = Field(..., max_length=2000)
     captchaToken: str
 
@@ -80,6 +83,7 @@ async def handle_contact_form(request: Request, form_data: ContactForm):
             payload = {
                 "name": form_data.name,
                 "email": form_data.email,
+                "subject": form_data.subject,
                 "message": form_data.message
             }
             # Apps script webhooks typically expect followed redirects to work properly
