@@ -15,7 +15,7 @@ import video3 from '../assets/video/3.mp4';
 import video4 from '../assets/video/4.mp4';
 import video5 from '../assets/video/5.mp4';
 import video6 from '../assets/video/6.mp4';
-import heroVideo from '../assets/video/looping.mp4';
+import heroVideo from '../assets/video/looping_seamless.mp4';
 
 // Mock Data
 const services = [
