@@ -24,8 +24,8 @@ FRONTEND_URL = os.getenv("FRONTEND_URL", "*")
 # CORS configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[FRONTEND_URL] if FRONTEND_URL != "*" else ["*"],
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
