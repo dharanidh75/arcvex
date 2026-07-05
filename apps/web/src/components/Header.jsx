@@ -19,6 +19,7 @@ export default function Header() {
     { name: 'About', href: '#about' },
     { name: 'Services', href: '#services' },
     { name: 'Work', href: '#work' },
+    { name: 'Support', href: '#support' },
     { name: 'Contact', href: '#contact' },
   ];
 
@@ -48,9 +49,10 @@ export default function Header() {
             ))}
             <a
               href="#contact"
-              className="px-5 py-2.5 bg-accent text-accent-foreground font-semibold rounded-xl hover:bg-accent/90 hover:glow-shadow transition-smooth active:scale-95"
+              className="relative overflow-hidden px-5 py-2.5 bg-accent text-accent-foreground font-semibold rounded-xl transition-smooth active:scale-95 group hover:glow-shadow"
             >
-              Get Started
+              <span className="absolute inset-0 w-full h-full bg-white origin-left transform scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100"></span>
+              <span className="relative z-10 group-hover:text-black transition-colors duration-300">Get Started</span>
             </a>
           </nav>
 
@@ -87,9 +89,10 @@ export default function Header() {
               <a
                 href="#contact"
                 onClick={() => setMobileMenuOpen(false)}
-                className="block text-center mt-4 px-5 py-3 bg-accent text-accent-foreground font-semibold rounded-xl hover:bg-accent/90 transition-smooth"
+                className="relative overflow-hidden block text-center mt-4 px-5 py-3 bg-accent text-accent-foreground font-semibold rounded-xl transition-smooth group"
               >
-                Get Started
+                <span className="absolute inset-0 w-full h-full bg-white origin-left transform scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100"></span>
+                <span className="relative z-10 group-hover:text-black transition-colors duration-300">Get Started</span>
               </a>
             </div>
           </motion.div>
