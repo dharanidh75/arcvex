@@ -78,4 +78,4 @@ ArcVex/
 - **[Tailwind CSS](https://tailwindcss.com/)**: Utility-first CSS framework for rapid styling.
 - **[Framer Motion](https://www.framer.com/motion/)**: Production-ready animation library for React.
 - **[Lucide React](https://lucide.dev/)**: Beautiful and consistent icon toolkit.
-- **[Google Fonts](https://fonts.google.com/)**: Utilizing `Plus Jakarta Sans` for clean body copy and `PT Serif` for elegant editorial highlights.
+- **[Google Fonts](https://fonts.google.com/)**: Utilizing `Plus Jakarta Sans` for clean body copy and `Tiempos` for elegant editorial highlights.
