@@ -79,3 +79,9 @@ ArcVex/
 - **[Framer Motion](https://www.framer.com/motion/)**: Production-ready animation library for React.
 - **[Lucide React](https://lucide.dev/)**: Beautiful and consistent icon toolkit.
 - **[Google Fonts](https://fonts.google.com/)**: Utilizing `Plus Jakarta Sans` for clean body copy and `Tiempos` for elegant editorial highlights.
+
+## ✨ Recent Updates
+- **Cinematic Video Hero:** Integrated an intelligent auto-playing background video (`looping.mp4`) with a seamless fade-in loading state.
+- **Premium Animations:** Tuned all Framer Motion scroll reveals globally to use an ultra-smooth cubic bezier spring curve for a luxurious feel.
+- **Support & Maintenance:** Added a new Support section detailing the complimentary 1-year support plan.
+- **Brand Updates:** Refined typography colors, added interactive sliding hover fills on CTA buttons, and updated social links including the modern X logo.
