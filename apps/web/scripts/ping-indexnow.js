@@ -10,7 +10,7 @@
  * then call this script from your CI/CD pipeline after deployment.
  */
 
-const KEY = '948c004543134ad4b8190f586a85994e';
+const KEY = '478c71a1febe4b22a9f74ed30fcd8511';
 const HOST = 'arcvex.in';
 
 const URLS = [
