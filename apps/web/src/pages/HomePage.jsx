@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Helmet } from 'react-helmet';
+
 import { motion } from 'framer-motion';
 import { CheckCircle, ShieldCheck, RefreshCw, Rocket, Brain, Palette, Code, TrendingUp, Zap, Smartphone, ArrowRight, Share2, MessageCircle, Link, Search, Bot, Monitor } from 'lucide-react';
 import { Instagram, Linkedin, XIcon } from '../components/BrandIcons';
@@ -8,7 +8,7 @@ import ProjectCard from '../components/ProjectCard';
 import ProjectModal from '../components/ProjectModal';
 import HorizontalScrollCarousel from '../components/HorizontalScrollCarousel';
 import SocialIcon from '../components/SocialIcon';
-import FAQ from '../components/FAQ';
+
 import { Turnstile } from '@marsidev/react-turnstile';
 
 import video1 from '../assets/video/1.mp4';
@@ -191,28 +191,26 @@ export default function HomePage() {
 
   return (
     <main className="min-h-screen">
-      <Helmet>
-        <title>ArcVex Agency | Bold Digital Experiences</title>
-        <meta name="description" content="A digital agency building high-contrast, premium marketing surfaces and applications." />
-      </Helmet>
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden bg-black">
         {/* Background Video & Overlays */}
         <div className="absolute inset-0 z-0">
-          <motion.video
-            src={heroVideo}
-            className="w-full h-full object-cover pointer-events-none"
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="auto"
-            onLoadedData={() => setIsVideoLoaded(true)}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: isVideoLoaded ? 1 : 0 }}
-            transition={{ duration: 1.5, ease: "easeInOut" }}
-          />
+          {!navigator.userAgent.includes("ReactSnap") && (
+            <motion.video
+              src={heroVideo}
+              className="w-full h-full object-cover pointer-events-none"
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="auto"
+              onLoadedData={() => setIsVideoLoaded(true)}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: isVideoLoaded ? 1 : 0 }}
+              transition={{ duration: 1.5, ease: "easeInOut" }}
+            />
+          )}
           {/* Dark overlay for text readability */}
           <div className="absolute inset-0 bg-black/45" />
           {/* Bottom gradient fade into background */}
@@ -427,8 +425,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <FAQ />
 
       {/* Contact / Footer Section */}
       <section id="contact" className="py-24 bg-background border-t border-border/50 relative overflow-hidden">
@@ -534,22 +530,26 @@ export default function HomePage() {
 
                   <div className="w-full pt-2 pb-1 flex justify-start">
                     <div className="overflow-hidden rounded-lg border border-border/40 bg-background/30 p-1 shadow-sm transition-all hover:border-border/80">
-                      <Turnstile
-                        key={turnstileKey}
-                        siteKey="0x4AAAAAADvlDxbG189yGJXi"
-                        options={{
-                          theme: 'dark'
-                        }}
-                        onSuccess={(token) => {
-                          setSubmitStatus({ type: '', message: '' });
-                          setFormData(prev => ({ ...prev, captchaToken: token }));
-                        }}
-                        onError={(errorCode) => {
-                          console.error('Turnstile Error:', errorCode);
-                          setSubmitStatus({ type: 'error', message: `Captcha error: ${errorCode || 'Unknown error'}. Check console or ensure the Site Key allows localhost.` });
-                        }}
-                        onExpire={() => setFormData(prev => ({ ...prev, captchaToken: '' }))}
-                      />
+                      {!navigator.userAgent.includes("ReactSnap") ? (
+                        <Turnstile
+                          key={turnstileKey}
+                          siteKey="0x4AAAAAADvlDxbG189yGJXi"
+                          options={{
+                            theme: 'dark'
+                          }}
+                          onSuccess={(token) => {
+                            setSubmitStatus({ type: '', message: '' });
+                            setFormData(prev => ({ ...prev, captchaToken: token }));
+                          }}
+                          onError={(errorCode) => {
+                            console.error('Turnstile Error:', errorCode);
+                            setSubmitStatus({ type: 'error', message: `Captcha error: ${errorCode || 'Unknown error'}. Check console or ensure the Site Key allows localhost.` });
+                          }}
+                          onExpire={() => setFormData(prev => ({ ...prev, captchaToken: '' }))}
+                        />
+                      ) : (
+                        <div className="p-4 text-sm text-white/50 text-center">Turnstile Captcha (Disabled during pre-rendering)</div>
+                      )}
                     </div>
                   </div>
 

@@ -1,4 +1,6 @@
-import React from 'react';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronDown } from 'lucide-react';
 
 const faqs = [
   {
@@ -39,17 +41,80 @@ const faqs = [
   },
 ];
 
+function FAQItem({ item, index }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: index * 0.05 }}
+      className="border border-border/50 rounded-xl overflow-hidden"
+    >
+      <button
+        onClick={() => setOpen(!open)}
+        aria-expanded={open}
+        className="w-full flex items-center justify-between px-6 py-5 text-left bg-card/40 hover:bg-card/70 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset group"
+      >
+        <h3 className="text-base md:text-lg font-semibold text-white group-hover:text-accent transition-colors duration-200 pr-4">
+          {item.q}
+        </h3>
+        <motion.div
+          animate={{ rotate: open ? 180 : 0 }}
+          transition={{ duration: 0.3, ease: 'easeInOut' }}
+          className="shrink-0 text-accent"
+        >
+          <ChevronDown size={20} />
+        </motion.div>
+      </button>
+
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            key="content"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            style={{ overflow: 'hidden' }}
+          >
+            <p className="px-6 pb-5 pt-2 text-muted-foreground leading-relaxed font-serif" style={{ fontFamily: '"PT Serif", serif' }}>
+              {item.a}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+}
+
 export default function FAQ() {
   return (
-    <section id="faq" aria-label="Frequently Asked Questions" className="max-w-4xl mx-auto py-16 px-4">
-      <h2 className="text-3xl font-bold mb-8 text-center">Frequently Asked Questions</h2>
-      <div className="space-y-6">
-        {faqs.map((item, i) => (
-          <div key={i} className="border-b border-gray-200 pb-4">
-            <h3 className="text-xl font-semibold mb-2">{item.q}</h3>
-            <p className="text-gray-600">{item.a}</p>
+    <section id="faq" aria-label="Frequently Asked Questions" className="py-24 bg-background">
+      <div className="max-w-4xl mx-auto px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+          className="text-center mb-16"
+        >
+          <div className="w-full border-b border-accent/40 pb-4 mb-8">
+            <p className="text-accent font-['Canela'] uppercase tracking-[0.25em] text-xl md:text-2xl">
+              FAQ
+            </p>
           </div>
-        ))}
+          <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white">
+            Frequently Asked Questions
+          </h2>
+        </motion.div>
+
+        <div className="space-y-3">
+          {faqs.map((item, i) => (
+            <FAQItem key={i} item={item} index={i} />
+          ))}
+        </div>
       </div>
     </section>
   );

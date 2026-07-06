@@ -24,7 +24,7 @@ export default function ProjectCard({ project, onClick, index = 0, offset = fals
       }}
     >
       <div className="aspect-[4/3] w-full overflow-hidden relative bg-muted">
-        {project.video ? (
+        {project.video && !navigator.userAgent.includes("ReactSnap") ? (
           <video
             src={project.video}
             onLoadedData={(e) => {
@@ -38,15 +38,15 @@ export default function ProjectCard({ project, onClick, index = 0, offset = fals
           />
         ) : (
           <img
-            src={project.image || `https://picsum.photos/seed/${project.title.replace(/\s/g,'')}/800/600`}
+            src={project.image || `https://picsum.photos/seed/${project.title.replace(/\s/g, '')}/800/600`}
             alt={project.title}
             className="w-full h-full object-cover transition-slow group-hover:scale-105"
           />
         )}
-        
+
         {/* Sleek Minimalist Overlay */}
         <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black via-black/60 to-transparent opacity-80 group-hover:opacity-100 transition-smooth" />
-        
+
         {/* Content */}
         <div className="absolute bottom-0 left-0 w-full p-8 flex flex-col justify-end">
           <h3 className="text-3xl font-extrabold text-white mb-1 group-hover:-translate-y-1 transition-smooth">
