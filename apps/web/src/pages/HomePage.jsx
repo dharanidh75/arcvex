@@ -11,7 +11,7 @@ import SocialIcon from '../components/SocialIcon';
 import FAQ from '../components/FAQ';
 import { Turnstile } from '@marsidev/react-turnstile';
 
-import video1 from '../assets/video/1.mp4';
+import video1 from "../assets/video/Reshub(1).mp4";
 import video2 from '../assets/video/2.mp4';
 import video3 from '../assets/video/3.mp4';
 import video4 from '../assets/video/4.mp4';
