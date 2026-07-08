@@ -264,7 +264,7 @@ export default function HomePage() {
               className="h-full min-h-[400px] rounded-2xl bg-muted border border-border/50 overflow-hidden relative"
             >
               <img
-                src="/about-image.png"
+                src="/about-image.webp"
                 alt="ArcVex Workspace"
                 loading="lazy"
                 className="w-full h-full object-cover"
