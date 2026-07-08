@@ -52,7 +52,7 @@ export default function HorizontalScrollCarousel({ projects, setSelectedProject 
             {/* 1st Item: Static Text Content */}
             <div className="w-[80vw] md:w-[45vw] shrink-0 pr-8 self-start pt-24 md:pt-32 flex flex-col">
               <div className="w-[110%] border-b border-accent/40 pb-4 mb-8">
-                <p className="text-accent font-['Canela'] uppercase tracking-[0.25em] text-xl md:text-2xl">
+                <p className="text-accent font-serif uppercase tracking-[0.25em] text-xl md:text-2xl">
                   Work
                 </p>
               </div>
@@ -78,7 +78,7 @@ export default function HorizontalScrollCarousel({ projects, setSelectedProject 
             {/* Final Item: Closing Text */}
             <div className="w-[85vw] md:w-[50vw] shrink-0 pl-6 md:pl-12 pr-8 md:pr-24 flex flex-col justify-center">
               <div className="w-full border-b border-accent/40 pb-4 mb-8">
-                <p className="text-accent font-['Canela'] uppercase tracking-[0.25em] text-xl md:text-2xl">
+                <p className="text-accent font-serif uppercase tracking-[0.25em] text-xl md:text-2xl">
                   Impact
                 </p>
               </div>
@@ -101,7 +101,7 @@ export default function HorizontalScrollCarousel({ projects, setSelectedProject 
             className="text-left mb-16"
           >
             <div className="w-full border-b border-accent/40 pb-4 mb-8">
-              <p className="text-accent font-['Canela'] uppercase tracking-[0.25em] text-xl">
+              <p className="text-accent font-serif uppercase tracking-[0.25em] text-xl">
                 Work
               </p>
             </div>

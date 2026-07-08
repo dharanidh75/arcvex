@@ -6,17 +6,17 @@ import { Instagram, Linkedin, XIcon } from '../components/BrandIcons';
 import ServiceCard from '../components/ServiceCard';
 import ProjectCard from '../components/ProjectCard';
 import ProjectModal from '../components/ProjectModal';
-import HorizontalScrollCarousel from '../components/HorizontalScrollCarousel';
+import CinematicWorkSection from '../components/CinematicWorkSection';
 import SocialIcon from '../components/SocialIcon';
 
 import { Turnstile } from '@marsidev/react-turnstile';
 
 import video1 from "../assets/video/Reshub(1).mp4";
-import video2 from '../assets/video/2.mp4';
-import video3 from '../assets/video/3.mp4';
-import video4 from '../assets/video/4.mp4';
-import video5 from '../assets/video/5.mp4';
-import video6 from '../assets/video/6.mp4';
+import video2 from '../assets/video/AI.mp4';
+import video3 from '../assets/video/web.mp4';
+import video4 from '../assets/video/BOTS.mp4';
+import video5 from '../assets/video/App(1).mp4';
+import video6 from '../assets/video/software.mp4';
 import heroVideo from '../assets/video/looping_seamless.mp4';
 
 // Mock Data
@@ -61,27 +61,28 @@ const services = [
 
 const projects = [
   {
-    title: 'Reshub',
-    category: 'CASE STUDY',
+    title: 'Intelligent AI Systems',
+    category: 'ABOUT OUR AI SOLUTIONS',
     image: 'https://picsum.photos/seed/reshub/800/600',
     video: video1,
     description: [
-      'A modern digital platform designed for scale and performance.',
+      'From intelligent assistants to enterprise-grade automation, we build AI systems that understand, reason, and take action—helping businesses work faster, smarter, and at scale.',
     ],
-    features: ['React', 'Tailwind CSS', 'Next.js'],
+    features: ['AI Chatbots', 'RAG Systems', 'AI Agents', 'Multi-Agent AI', 'Generative AI'],
     technologies: ['React', 'Next.js', 'Vercel'],
     results: 'Great success and improved user retention.',
     ctaUrl: '#',
+    ctaText: 'Explore AI Solutions',
   },
   {
-    title: 'MedCode',
-    category: 'CASE STUDY',
+    title: 'Company AI Assistant',
+    category: 'AI PLATFORM',
     image: 'https://picsum.photos/seed/medcode/800/600',
     video: video2,
     description: [
-      'Healthcare medical coding platform built for accuracy and speed.'
+      'A secure AI assistant built for organizations to search company knowledge, automate repetitive tasks, generate content, and improve team productivity.'
     ],
-    features: ['Secure data handling', 'Fast processing'],
+    features: ['Enterprise AI', 'RAG Search', 'AI Assistant', 'Automation'],
     technologies: ['Vue.js', 'Node.js', 'PostgreSQL'],
     results: 'Increased efficiency by 40%.',
     ctaUrl: '#',
@@ -92,9 +93,9 @@ const projects = [
     image: 'https://picsum.photos/seed/webdev/800/600',
     video: video3,
     description: [
-      'Custom websites, business portals, and eCommerce platforms.'
+      'From immersive 3D experiences to high-converting business websites, we build modern web platforms that combine stunning visuals, smooth interactions, and exceptional performance.'
     ],
-    features: ['Responsive design', 'Modern architectures'],
+    features: ['3D Experiences', 'Product Websites', 'Business Platforms'],
     technologies: ['React', 'Vite', 'Tailwind CSS'],
     results: 'High performance and seamless user experiences.',
     ctaUrl: '#',
@@ -105,22 +106,22 @@ const projects = [
     image: 'https://picsum.photos/seed/bots/800/600',
     video: video4,
     description: [
-      'Intelligent bots for customer support and workflow automation.'
+      'We build intelligent automation that works behind the scenes—from customer conversations and authentication to order tracking, notifications, and business workflows that save time and improve every interaction.'
     ],
-    features: ['Automated replies', 'AI-powered conversations'],
+    features: ['Instagram Bots', 'WhatsApp Bots', 'Telegram Bots', 'Discord Bots'],
     technologies: ['Python', 'Node.js', 'OpenAI'],
     results: '24/7 Support availability.',
     ctaUrl: '#',
   },
   {
     title: 'App Development',
-    category: 'MOBILE APP',
+    category: 'MOBILE EXPERIENCES',
     image: 'https://picsum.photos/seed/appdev/800/600',
     video: video5,
     description: [
-      'Native and cross-platform mobile apps for iOS and Android.'
+      'From consumer apps to enterprise platforms, we create mobile experiences that combine intuitive design, smooth interactions, and performance users love.'
     ],
-    features: ['Optimized performance', 'Native feel'],
+    features: ['Business Apps', 'Consumer Apps', 'Enterprise Mobility'],
     technologies: ['React Native', 'Flutter'],
     results: 'High user engagement on mobile.',
     ctaUrl: '#',
@@ -131,9 +132,9 @@ const projects = [
     image: 'https://picsum.photos/seed/software/800/600',
     video: video6,
     description: [
-      'Custom software applications tailored to business needs.'
+      'From internal business platforms to enterprise systems, we build software that simplifies operations, improves productivity, and scales with growing businesses.'
     ],
-    features: ['Scalable architecture', 'Secure deployments'],
+    features: ['Business Platforms', 'Enterprise Systems', 'Internal Tools'],
     technologies: ['Java', 'C#', 'Cloud infrastructure'],
     results: 'Streamlined business operations.',
     ctaUrl: '#',
@@ -190,10 +191,10 @@ export default function HomePage() {
   };
 
   return (
-    <main className="min-h-screen">
+    <main className="min-h-[100dvh]">
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden bg-black">
+      <section className="relative min-h-[100dvh] flex items-center justify-center pt-20 overflow-hidden bg-black">
         {/* Background Video & Overlays */}
         <div className="absolute inset-0 z-0">
           {!navigator.userAgent.includes("ReactSnap") && (
@@ -223,13 +224,13 @@ export default function HomePage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
           >
-            <p className="text-white font-['Canela'] text-xl md:text-2xl tracking-wide mb-3">
+            <p className="text-white font-serif text-xl md:text-2xl tracking-wide mb-3">
               We build digital futures
             </p>
             <h1 className="text-[clamp(3rem,13vw,10rem)] leading-[0.9] font-extrabold text-white tracking-tighter mb-8">
               ARCVEX<span className="text-accent">.</span>
             </h1>
-            <p className="max-w-4xl mx-auto text-xl md:text-2xl text-white/70 mb-12 leading-relaxed font-serif" style={{ fontFamily: '"PT Serif", serif' }}>
+            <p className="max-w-4xl mx-auto text-lg md:text-2xl text-white/70 mb-12 leading-relaxed font-serif" style={{ fontFamily: '"PT Serif", serif' }}>
               We build custom websites, business software, mobile applications, AI-powered bots, and intuitive digital experiences that help businesses streamline operations, strengthen their online presence, and grow with confidence.
             </p>
             <a
@@ -265,6 +266,7 @@ export default function HomePage() {
               <img
                 src="/about-image.png"
                 alt="ArcVex Workspace"
+                loading="lazy"
                 className="w-full h-full object-cover"
               />
             </motion.div>
@@ -278,7 +280,7 @@ export default function HomePage() {
               className="flex flex-col justify-center space-y-6"
             >
               <div className="border-b border-accent/40 pb-4 mb-2">
-                <p className="text-accent font-['Canela'] uppercase tracking-[0.25em] text-xl md:text-2xl">
+                <p className="text-accent font-serif uppercase tracking-[0.25em] text-xl md:text-2xl">
                   Who We Are
                 </p>
               </div>
@@ -307,7 +309,7 @@ export default function HomePage() {
             className="text-center mb-16"
           >
             <div className="w-full border-b border-accent/40 pb-4 mb-8">
-              <p className="text-accent font-['Canela'] uppercase tracking-[0.25em] text-xl md:text-2xl">
+              <p className="text-accent font-serif uppercase tracking-[0.25em] text-xl md:text-2xl">
                 Our Services
               </p>
             </div>
@@ -325,7 +327,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <HorizontalScrollCarousel projects={projects} setSelectedProject={setSelectedProject} />
+      <CinematicWorkSection projects={projects} />
 
       {/* Support & Maintenance Section */}
       <section id="support" className="py-24 bg-background relative overflow-hidden">
@@ -338,15 +340,15 @@ export default function HomePage() {
             className="text-center mb-16"
           >
             <div className="w-full border-b border-accent/40 pb-4 mb-8">
-              <p className="text-accent font-['Canela'] uppercase tracking-[0.25em] text-xl md:text-2xl">
+              <p className="text-accent font-serif uppercase tracking-[0.25em] text-xl md:text-2xl">
                 Support & Maintenance
               </p>
             </div>
             <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white mb-6">
-              1-Year Complimentary Support
+              6-Month Complimentary Support
             </h2>
             <p className="max-w-3xl mx-auto text-xl text-muted-foreground leading-relaxed font-serif" style={{ fontFamily: '"PT Serif", serif' }}>
-              We don't just deliver software—we stand behind it. Every ArcVex project includes one year of complimentary technical support to ensure your application remains stable, reliable, and ready to support your business.
+              Every ArcVex project includes 6 months of complimentary technical support to help keep your application stable, reliable, and running smoothly after launch.
             </p>
           </motion.div>
 
@@ -361,14 +363,14 @@ export default function HomePage() {
             >
               <div className="flex items-center space-x-4 mb-8">
                 <CheckCircle className="w-8 h-8 text-accent" />
-                <h3 className="text-2xl font-bold text-white group-hover:text-accent transition-colors">Included for 1-Year</h3>
+                <h3 className="text-2xl font-bold text-white group-hover:text-accent transition-colors">Included for 6 Months</h3>
               </div>
 
               <ul className="space-y-5">
                 {[
                   'Bug Fixes & Maintenance',
                   'Technical Assistance',
-                  'Email (support@arcvex.in) & Remote Support',
+                  'Email & Remote Support',
                   'Issue Monitoring & Troubleshooting'
                 ].map((text, i) => (
                   <li key={i} className="flex items-start space-x-3 text-lg text-white/80">
@@ -390,8 +392,7 @@ export default function HomePage() {
               <div className="flex items-center space-x-4 mb-8">
                 <ShieldCheck className="w-8 h-8 text-white/80 group-hover:text-accent transition-colors" />
                 <div>
-                  <h3 className="text-2xl font-bold text-white group-hover:text-accent transition-colors">Premium Support</h3>
-                  <p className="text-sm text-white/50">(Paid After 1 Year)</p>
+                  <h3 className="text-2xl font-bold text-white group-hover:text-accent transition-colors">Additional Services</h3>
                 </div>
               </div>
 
@@ -419,7 +420,7 @@ export default function HomePage() {
             className="text-center mt-12"
           >
             <p className="text-sm text-white/40 max-w-2xl mx-auto">
-              Complimentary support covers maintenance and issue resolution. New features and major enhancements are available under our Premium Support plan. For assistance, contact <a href="mailto:support@arcvex.in" className="text-accent hover:underline font-medium">support@arcvex.in</a>.
+              Complimentary support includes maintenance, bug fixes, and technical assistance for the first 6 months after project delivery. Additional services such as feature enhancements, security improvements, performance optimization, and platform upgrades are available upon request. Contact <a href="mailto:support@arcvex.in" className="text-accent hover:underline font-medium">support@arcvex.in</a> for assistance.
             </p>
           </motion.div>
         </div>

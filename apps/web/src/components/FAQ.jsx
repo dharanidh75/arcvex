@@ -101,7 +101,7 @@ export default function FAQ() {
           className="text-center mb-16"
         >
           <div className="w-full border-b border-accent/40 pb-4 mb-8">
-            <p className="text-accent font-['Canela'] uppercase tracking-[0.25em] text-xl md:text-2xl">
+            <p className="text-accent font-serif uppercase tracking-[0.25em] text-xl md:text-2xl">
               FAQ
             </p>
           </div>

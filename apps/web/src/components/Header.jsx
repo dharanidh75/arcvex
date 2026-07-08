@@ -32,8 +32,35 @@ export default function Header() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          <a href="/" className="text-xl font-extrabold tracking-tighter text-white">
-            ARCVEX<span className="text-accent">.</span>
+          <a href="/" className="relative flex items-center h-10 w-32">
+            <AnimatePresence>
+              {isScrolled && (
+                <motion.img
+                  key="image-logo"
+                  src="/logo.png"
+                  alt="ArcVex Logo"
+                  className="absolute left-0 h-10 w-auto object-contain origin-left"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.4, ease: "easeInOut" }}
+                />
+              )}
+            </AnimatePresence>
+            <AnimatePresence>
+              {!isScrolled && (
+                <motion.span
+                  key="text-logo"
+                  className="absolute left-0 text-xl font-extrabold tracking-tighter text-white origin-left whitespace-nowrap"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  transition={{ duration: 0.4, ease: "easeInOut" }}
+                >
+                  ARCVEX<span className="text-accent">.</span>
+                </motion.span>
+              )}
+            </AnimatePresence>
           </a>
 
           {/* Desktop Nav */}
