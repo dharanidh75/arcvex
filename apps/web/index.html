@@ -4,35 +4,62 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/image.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Arcvex Studio | Full-Stack & AI Development Agency</title>
+    <title>Arcvex Studio | Full-Stack &amp; AI Development Agency</title>
     <meta name="description" content="Arcvex Studio builds full-stack web apps, AI agents, and custom software for startups and businesses worldwide. LangGraph agents, React/FastAPI apps, and production-ready AI systems." />
     <link rel="canonical" href="https://arcvex.in/" />
-    
+
+    <!-- Robots -->
+    <meta name="robots" content="index, follow" />
+
+    <!-- Performance: Preconnect to external origins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Google Fonts — all with display=swap to prevent render-blocking -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300..800&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" />
+
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Arcvex Studio | Full-Stack & AI Development Agency" />
+    <meta property="og:title" content="Arcvex Studio | Full-Stack &amp; AI Development Agency" />
     <meta property="og:description" content="We design and ship full-stack apps and AI-agent systems — from idea to production. LangGraph, React, FastAPI, and cloud-native architecture." />
     <meta property="og:url" content="https://arcvex.in/" />
     <meta property="og:image" content="https://arcvex.in/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta property="og:site_name" content="Arcvex Studio" />
-    
+
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Arcvex Studio | Full-Stack & AI Development Agency" />
+    <meta name="twitter:site" content="@ARCVEX3" />
+    <meta name="twitter:title" content="Arcvex Studio | Full-Stack &amp; AI Development Agency" />
     <meta name="twitter:description" content="We design and ship full-stack apps and AI-agent systems — from idea to production." />
     <meta name="twitter:image" content="https://arcvex.in/og-image.png" />
-    
-    <!-- Robots / AI crawler access (explicit allow, redundant with robots.txt but some bots check meta first) -->
-    <meta name="robots" content="index, follow" />
 
+    <!-- IndexNow key hint -->
+    <meta name="indexnow-key" content="478c71a1febe4b22a9f74ed30fcd8511" />
+
+    <!-- Structured Data: Organization -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "Arcvex Studio",
       "url": "https://arcvex.in",
-      "logo": "https://arcvex.in/logo.png",
+      "logo": "https://arcvex.in/image.png",
       "description": "Arcvex Studio is a full-stack and AI development agency building production-grade web applications, AI agent systems, and custom software for clients worldwide.",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+91-93637-78981",
+        "email": "hello@arcvex.in",
+        "contactType": "customer service",
+        "areaServed": "Worldwide"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Coimbatore",
+        "addressCountry": "IN"
+      },
       "sameAs": [
         "https://github.com/dharanidh75",
         "https://www.instagram.com/arcvex3/",
@@ -40,18 +67,9 @@
         "https://x.com/ARCVEX3"
       ],
       "founder": [
-        {
-          "@type": "Person",
-          "name": "Dharanidharan J"
-        },
-        {
-          "@type": "Person",
-          "name": "Kamaleshwaran"
-        },
-        {
-          "@type": "Person",
-          "name": "Karthik Jayakrishna"
-        }
+        { "@type": "Person", "name": "Dharanidharan J" },
+        { "@type": "Person", "name": "Kamaleshwaran" },
+        { "@type": "Person", "name": "Karthik Jayakrishna" }
       ],
       "areaServed": "Worldwide",
       "knowsAbout": [
@@ -73,6 +91,19 @@
       ]
     }
     </script>
+
+    <!-- Structured Data: WebSite with SearchAction -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Arcvex Studio",
+      "url": "https://arcvex.in",
+      "description": "Full-stack and AI development agency building web apps, AI agents, and custom software."
+    }
+    </script>
+
+    <!-- Structured Data: FAQPage (GEO — for AI engine citations) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -91,7 +122,7 @@
           "name": "What technologies does Arcvex Studio use?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Arcvex Studio builds with React, FastAPI, LangGraph for multi-agent AI orchestration, ChromaDB and RAG pipelines, PostgreSQL, and deploys on Vercel, Render, and Cloudflare."
+            "text": "Arcvex Studio builds with React, FastAPI, LangGraph for multi-agent AI orchestration, ChromaDB and RAG pipelines, PostgreSQL, and deploys on Vercel and Render."
           }
         },
         {
