@@ -205,7 +205,7 @@ export default function HomePage() {
               loop
               muted
               playsInline
-              preload="auto"
+              preload="metadata"
               onLoadedData={() => setIsVideoLoaded(true)}
               initial={{ opacity: 0 }}
               animate={{ opacity: isVideoLoaded ? 1 : 0 }}
@@ -220,9 +220,9 @@ export default function HomePage() {
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col items-center text-center">
           <motion.div
-            initial={{ opacity: 0, y: 50 }}
+            initial={{ opacity: 1, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
           >
             <p className="text-white font-serif text-xl md:text-2xl tracking-wide mb-3">
               We build digital futures
