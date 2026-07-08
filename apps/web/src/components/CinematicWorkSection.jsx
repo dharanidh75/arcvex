@@ -1,55 +1,67 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
-const Card = ({ project, i, progress, range, targetScale }) => {
-  const container = useRef(null);
+const CrossfadeSlide = ({ project, i, total, progress }) => {
+  const step = 1 / total;
   
-  // As the user scrolls, we map the progress to a scale value.
-  // When this card is pinned at the top and the user keeps scrolling down, it shrinks slightly.
-  const scale = useTransform(progress, range, [1, targetScale]);
+  // Calculate precise crossfade timings based on scroll progress
+  let input, output, scaleOutput;
   
-  // Calculate dynamic top positioning so the cards stack elegantly with a small offset
-  const topPosition = `calc(10vh + ${i * 30}px)`;
+  if (i === 0) {
+    input = [0, step * 0.8, step];
+    output = [1, 1, 0];
+    scaleOutput = [1, 1.02, 1.05];
+  } else if (i === total - 1) {
+    input = [(i - 0.2) * step, i * step, 1];
+    output = [0, 1, 1];
+    scaleOutput = [0.95, 1, 1.02];
+  } else {
+    input = [(i - 0.2) * step, i * step, (i + 0.8) * step, (i + 1) * step];
+    output = [0, 1, 1, 0];
+    scaleOutput = [0.95, 1, 1.02, 1.05];
+  }
+
+  const opacity = useTransform(progress, input, output);
+  const scale = useTransform(progress, input, scaleOutput);
 
   return (
-    <div ref={container} className="h-screen flex items-center justify-center sticky top-0">
-      <motion.div 
-        style={{ scale, top: topPosition }}
-        className="relative flex flex-col w-[92%] md:w-[85%] max-w-6xl h-[75vh] md:h-[80vh] rounded-[2rem] md:rounded-[3rem] overflow-hidden shadow-2xl origin-top border border-white/10 group"
-      >
+    <motion.div 
+      style={{ opacity }} 
+      className="absolute inset-0 w-full h-full flex items-center will-change-transform"
+    >
+      <motion.div style={{ scale }} className="absolute inset-0 w-full h-full z-0 origin-center will-change-transform">
         <video 
-           src={project.video}
-           autoPlay loop muted playsInline
-           className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+          src={project.video} 
+          autoPlay loop muted playsInline 
+          className="w-full h-full object-cover" 
         />
-        
-        {/* Cinematic gradient to ensure text is perfectly readable */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none" />
-        
-        <div className="absolute inset-0 p-8 md:p-16 flex flex-col justify-end">
-           <div className="max-w-4xl">
-             <p className="text-accent uppercase tracking-[0.3em] font-medium text-xs md:text-sm mb-3 md:mb-4 drop-shadow-md">
-               {project.category}
-             </p>
-             <h3 className="text-white text-3xl md:text-5xl lg:text-6xl font-bold tracking-tighter mb-4 md:mb-6 drop-shadow-2xl">
-               {project.title}
-             </h3>
-             {project.description && (
-               <p className="text-white/80 text-base md:text-xl font-serif leading-relaxed mb-6 md:mb-8 drop-shadow-md max-w-2xl" style={{ fontFamily: '"PT Serif", serif' }}>
-                 {project.description[0]}
-               </p>
-             )}
-             <div className="flex flex-wrap gap-2 md:gap-3">
-                {project.features.map((feat, idx) => (
-                   <span key={idx} className="px-3 py-1.5 md:px-5 md:py-2 rounded-full bg-black/40 backdrop-blur-xl border border-white/10 text-xs md:text-sm text-white/90 shadow-2xl tracking-wide">
-                      {feat}
-                   </span>
-                ))}
-             </div>
-           </div>
-        </div>
       </motion.div>
-    </div>
+      
+      {/* Cinematic Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/40 to-transparent z-10 pointer-events-none" />
+      
+      {/* Content */}
+      <div className="relative z-20 max-w-7xl mx-auto px-6 w-full flex flex-col items-start text-left">
+        <p className="text-accent uppercase tracking-[0.3em] font-medium text-xs md:text-sm mb-4 drop-shadow-md">
+           {project.category}
+        </p>
+        <h3 className="text-white text-4xl md:text-6xl lg:text-8xl font-bold tracking-tighter leading-[1] mb-6 drop-shadow-2xl">
+           {project.title}
+        </h3>
+        {project.description && (
+          <p className="text-white/80 text-lg md:text-2xl font-serif leading-relaxed mb-10 max-w-2xl drop-shadow-md" style={{ fontFamily: '"PT Serif", serif' }}>
+            {project.description[0]}
+          </p>
+        )}
+        <div className="flex flex-wrap gap-3">
+          {project.features.map((feat, idx) => (
+            <span key={idx} className="px-4 py-2 rounded-full bg-black/40 backdrop-blur-xl border border-white/10 text-sm text-white/90 shadow-2xl tracking-wide">
+              {feat}
+            </span>
+          ))}
+        </div>
+      </div>
+    </motion.div>
   );
 };
 
@@ -58,7 +70,7 @@ export default function CinematicWorkSection({ projects }) {
   const [isInView, setIsInView] = useState(false);
 
   useEffect(() => {
-    // Only mount heavy videos when section is near
+    // Only mount heavy videos when section is near the viewport
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -82,32 +94,29 @@ export default function CinematicWorkSection({ projects }) {
   });
 
   return (
-    <section ref={container} className="relative w-full bg-black pb-24 pt-24 font-['Plus_Jakarta_Sans']" id="work">
-      <div className="text-center mb-16 relative z-10 px-6">
-         <div className="w-full border-b border-accent/40 pb-4 mb-8 max-w-2xl mx-auto">
-           <p className="text-accent font-serif uppercase tracking-[0.25em] text-xl md:text-2xl">
-             Our Work
-           </p>
-         </div>
-         <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight">
-           Everything we build.
-         </h2>
-      </div>
-      
-      <div className="relative z-20">
-        {isInView && projects.map((project, i) => {
-          const targetScale = 1 - ((projects.length - i) * 0.05);
-          return (
-            <Card 
-              key={i} 
-              project={project} 
-              i={i} 
-              progress={scrollYProgress} 
-              range={[i * (1 / projects.length), 1]} 
-              targetScale={targetScale}
-            />
-          );
-        })}
+    <section 
+      ref={container} 
+      className="relative w-full bg-black font-['Plus_Jakarta_Sans']" 
+      style={{ height: `${projects.length * 100}vh` }} 
+      id="work"
+    >
+      <div className="sticky top-0 h-screen w-full overflow-hidden">
+        
+        {/* Pinned Title Layer */}
+        <div className="absolute top-12 left-12 z-50 pointer-events-none">
+          <h2 className="text-white/50 text-xl font-bold tracking-[0.2em] uppercase">Work</h2>
+        </div>
+
+        {isInView && projects.map((project, i) => (
+          <CrossfadeSlide 
+            key={i} 
+            project={project} 
+            i={i} 
+            total={projects.length} 
+            progress={scrollYProgress} 
+          />
+        ))}
+
       </div>
     </section>
   );
