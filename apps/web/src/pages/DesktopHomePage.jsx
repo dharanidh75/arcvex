@@ -546,8 +546,8 @@ export default function DesktopHomePage() {
                     ></textarea>
                   </div>
 
-                  <div className="w-full pt-2 pb-1 flex justify-start">
-                    <div className="overflow-hidden rounded-lg border border-border/40 bg-background/30 p-1 shadow-sm transition-all hover:border-border/80">
+                  <div className="w-full pt-2 pb-1 flex justify-center">
+                    <div className="transition-all rounded-lg overflow-hidden flex justify-center items-center">
                       {!navigator.userAgent.includes("ReactSnap") ? (
                         <Turnstile
                           key={turnstileKey}

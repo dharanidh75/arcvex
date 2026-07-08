@@ -206,9 +206,9 @@ export default function MobileHomePage() {
         {/* Background Video & Overlays */}
         <div className="absolute inset-0 z-0">
           <img 
-            src="/about-image.webp" 
-            alt="Hero background" 
-            className="w-full h-full object-cover pointer-events-none opacity-50"
+            src="/logo.png" 
+            alt="Hero background logo" 
+            className="w-full h-full object-contain p-8 md:p-12 pointer-events-none opacity-30"
           />
           {/* Dark overlay for text readability */}
           <div className="absolute inset-0 bg-black/45" />
@@ -552,8 +552,8 @@ export default function MobileHomePage() {
                     ></textarea>
                   </div>
 
-                  <div className="w-full pt-2 pb-1 flex justify-start">
-                    <div className="overflow-hidden rounded-lg border border-border/40 bg-background/30 p-1 shadow-sm transition-all hover:border-border/80">
+                  <div className="w-full pt-2 pb-1 flex justify-center">
+                    <div className="transition-all rounded-lg overflow-hidden flex justify-center items-center">
                       {!navigator.userAgent.includes("ReactSnap") ? (
                         <Turnstile
                           key={turnstileKey}
