@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { motion } from 'framer-motion';
 import { CheckCircle, ShieldCheck, RefreshCw, Rocket, Brain, Palette, Code, TrendingUp, Zap, Smartphone, ArrowRight, Share2, MessageCircle, Link, Search, Bot, Monitor } from 'lucide-react';
@@ -144,6 +144,14 @@ const projects = [
 export default function HomePage() {
   const [selectedProject, setSelectedProject] = useState(null);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Form State
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '', captchaToken: '' });
@@ -197,7 +205,7 @@ export default function HomePage() {
       <section className="relative min-h-[100dvh] flex items-center justify-center pt-20 overflow-hidden bg-black">
         {/* Background Video & Overlays */}
         <div className="absolute inset-0 z-0">
-          {!navigator.userAgent.includes("ReactSnap") && (
+          {!navigator.userAgent.includes("ReactSnap") && !isMobile && (
             <motion.video
               src={heroVideo}
               className="w-full h-full object-cover pointer-events-none"
@@ -210,6 +218,15 @@ export default function HomePage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: isVideoLoaded ? 1 : 0 }}
               transition={{ duration: 1.5, ease: "easeInOut" }}
+            >
+              <track kind="captions" srcLang="en" label="English" />
+            </motion.video>
+          )}
+          {!navigator.userAgent.includes("ReactSnap") && isMobile && (
+            <img 
+              src="/about-image.webp" 
+              alt="Hero background" 
+              className="w-full h-full object-cover pointer-events-none opacity-50"
             />
           )}
           {/* Dark overlay for text readability */}
@@ -582,9 +599,9 @@ export default function HomePage() {
                 &copy; {new Date().getFullYear()} ArcVex Agency. All rights reserved.
               </p>
               <div className="flex space-x-4">
-                <SocialIcon href="https://www.instagram.com/arcvex3/" icon={Instagram} />
-                <SocialIcon href="https://www.linkedin.com/in/arcvex-505ba041b" icon={Linkedin} />
-                <SocialIcon href="https://x.com/ARCVEX3" icon={XIcon} />
+                <SocialIcon href="https://www.instagram.com/arcvex3/" icon={Instagram} ariaLabel="Instagram" />
+                <SocialIcon href="https://www.linkedin.com/in/arcvex-505ba041b" icon={Linkedin} ariaLabel="LinkedIn" />
+                <SocialIcon href="https://x.com/ARCVEX3" icon={XIcon} ariaLabel="X" />
               </div>
             </div>
           </div>
