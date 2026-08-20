@@ -1,18 +1,17 @@
-import { motion } from 'framer-motion';
+import React from 'react';
 
 export default function SocialIcon({ href, icon: Icon, ariaLabel }) {
   return (
-    <motion.a
+    <a
       href={href}
       aria-label={ariaLabel}
       target="_blank"
       rel="noopener noreferrer"
-      className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/70 hover:bg-accent/10 hover:text-accent hover:border-accent/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-      whileHover={{ scale: 1.15, y: -4 }}
-      whileTap={{ scale: 0.95 }}
-      transition={{ type: "spring", stiffness: 400, damping: 17 }}
+      className="group relative w-12 h-12 rounded-full double-bezel-outer flex items-center justify-center active:scale-95 transition-spring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
     >
-      <Icon size={18} />
-    </motion.a>
+      <div className="absolute inset-1 rounded-full double-bezel-inner flex items-center justify-center text-foreground/50 transition-spring group-hover:text-foreground group-hover:bg-black/5 group-hover:scale-105">
+        <Icon size={18} className="transition-spring group-hover:-translate-y-[1px]" />
+      </div>
+    </a>
   );
 }

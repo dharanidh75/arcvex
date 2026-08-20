@@ -1,19 +1,30 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
-import { cn } from '../lib/utils';
+import React, { useState, useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
+import { ScrambleTextPlugin } from 'gsap/ScrambleTextPlugin';
+
+gsap.registerPlugin(useGSAP, ScrambleTextPlugin);
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const headerRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  }, [mobileMenuOpen]);
 
   const navLinks = [
     { name: 'About', href: '#about' },
@@ -23,84 +34,78 @@ export default function Header() {
     { name: 'Contact', href: '#contact' },
   ];
 
+  const { contextSafe } = useGSAP({ scope: headerRef });
+
+  const handleLinkHover = contextSafe((e, name) => {
+    gsap.to(e.target, {
+      duration: 0.4,
+      scrambleText: { text: name, chars: 'upperAndLowerCase', speed: 0.5 },
+      ease: 'power2.out'
+    });
+  });
+
   return (
-    <header
-      className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-smooth',
-        isScrolled ? 'glass border-b' : 'bg-transparent border-transparent'
-      )}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          <a href="/" className="relative flex items-center h-10 w-32">
-            <span className="absolute left-0 text-xl font-extrabold tracking-tighter text-white origin-left whitespace-nowrap">
+    <>
+      <header ref={headerRef} className="site-header fixed top-0 left-0 right-0 z-50 flex justify-center px-4 pt-6 md:pt-8 pointer-events-none opacity-0 translate-y-[-100px]">
+        <div 
+          className={`pointer-events-auto flex items-center justify-between px-6 py-3 rounded-full transition-all duration-500 ${
+            isScrolled ? 'glass-light w-full md:w-[600px]' : 'bg-transparent w-full md:w-[600px] md:glass-light'
+          }`}
+        >
+          {/* Logo */}
+          <a href="/" className="relative flex items-center h-8 group magnetic" data-magnetic-strength="0.2">
+            <span 
+              className="text-xl font-extrabold tracking-tight text-foreground transition-transform duration-500 group-hover:scale-105"
+              onMouseEnter={(e) => handleLinkHover(e, 'ARCVEX.')}
+            >
               ARCVEX<span className="text-accent">.</span>
             </span>
           </a>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="hidden md:flex items-center space-x-1">
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
-                className="text-sm font-medium text-white/70 hover:text-white transition-smooth"
+                onMouseEnter={(e) => handleLinkHover(e, link.name)}
+                className="px-4 py-2 rounded-full text-sm font-medium text-foreground/70 hover:text-foreground hover:bg-white/5 transition-colors duration-300 magnetic"
+                data-magnetic-strength="0.1"
               >
                 {link.name}
               </a>
             ))}
-            <a
-              href="#contact"
-              className="relative overflow-hidden px-5 py-2.5 bg-accent text-accent-foreground font-semibold rounded-xl transition-smooth active:scale-95 group hover:glow-shadow"
-            >
-              <span className="absolute inset-0 w-full h-full bg-white origin-left transform scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100"></span>
-              <span className="relative z-10 group-hover:text-black transition-colors duration-300">Get Started</span>
-            </a>
           </nav>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Hamburger Morph (Physics based CSS) */}
           <button
-            aria-label="Toggle mobile menu"
-            className="md:hidden text-white p-2 focus-visible:outline outline-2 outline-accent rounded-md"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden relative w-10 h-10 flex flex-col justify-center items-center rounded-full bg-white/5 active:scale-90 transition-spring z-[60]"
+            aria-label="Toggle menu"
           >
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            <span className={`w-5 h-[1.5px] bg-foreground transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${mobileMenuOpen ? 'rotate-45 translate-y-[1.5px]' : '-translate-y-1'}`} />
+            <span className={`w-5 h-[1.5px] bg-foreground transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${mobileMenuOpen ? '-rotate-45 -translate-y-[1.5px]' : 'translate-y-1'}`} />
           </button>
         </div>
-      </div>
+      </header>
 
-      {/* Mobile Nav */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="md:hidden glass-modal border-t"
-          >
-            <div className="px-4 pt-2 pb-6 space-y-4">
-              {navLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block text-base font-medium text-white/80 hover:text-white"
-                >
-                  {link.name}
-                </a>
-              ))}
+      {/* We are focusing on Hero right now, but leaving the basic mobile menu structure if needed */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-[45] glass-modal flex flex-col justify-center items-center px-6">
+          <nav className="flex flex-col space-y-6 text-center">
+            {navLinks.map((link) => (
               <a
-                href="#contact"
+                key={link.name}
+                href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className="relative overflow-hidden block text-center mt-4 px-5 py-3 bg-accent text-accent-foreground font-semibold rounded-xl transition-smooth group"
+                className="block text-4xl font-bold tracking-tight text-foreground hover:text-accent transition-colors"
               >
-                <span className="absolute inset-0 w-full h-full bg-white origin-left transform scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100"></span>
-                <span className="relative z-10 group-hover:text-black transition-colors duration-300">Get Started</span>
+                {link.name}
               </a>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </header>
+            ))}
+          </nav>
+        </div>
+      )}
+    </>
   );
 }

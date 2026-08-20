@@ -1,23 +1,19 @@
 import { useState, useEffect } from 'react';
-
 import { motion } from 'framer-motion';
 import { CheckCircle, ShieldCheck, RefreshCw, Rocket, Brain, Palette, Code, TrendingUp, Zap, Smartphone, ArrowRight, Share2, MessageCircle, Link, Search, Bot, Monitor } from 'lucide-react';
 import { Instagram, Linkedin, XIcon } from '../components/BrandIcons';
 import ServiceCard from '../components/ServiceCard';
 import ProjectCard from '../components/ProjectCard';
-import ProjectModal from '../components/ProjectModal';
-import CinematicWorkSection from '../components/CinematicWorkSection';
 import SocialIcon from '../components/SocialIcon';
 
 import { Turnstile } from '@marsidev/react-turnstile';
 
-import video1 from "../assets/video/Reshub(1).mp4";
-import video2 from '../assets/video/AI.mp4';
-import video3 from '../assets/video/web.mp4';
-import video4 from '../assets/video/BOTS.mp4';
-import video5 from '../assets/video/App(1).mp4';
-import video6 from '../assets/video/software.mp4';
-import heroVideo from '../assets/video/looping_seamless.mp4';
+const video1 = null;
+const video2 = null;
+const video3 = null;
+const video4 = null;
+const video5 = null;
+const video6 = null;
 
 // Mock Data
 const services = [
@@ -143,16 +139,8 @@ const projects = [
 
 export default function MobileHomePage() {
   const [selectedProject, setSelectedProject] = useState(null);
-  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
+  const [activeService, setActiveService] = useState(0);
+  
   // Form State
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '', captchaToken: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -171,7 +159,7 @@ export default function MobileHomePage() {
 
     try {
       const rawApiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
-      const apiUrl = rawApiUrl.replace(/\/+$/, ''); // Remove any trailing slashes
+      const apiUrl = rawApiUrl.replace(/\/+$/, '');
       const response = await fetch(`${apiUrl}/contact`, {
         method: 'POST',
         headers: {
@@ -199,148 +187,168 @@ export default function MobileHomePage() {
   };
 
   return (
-    <main className="min-h-[100dvh]">
+    <main className="min-h-[100dvh] bg-background text-foreground overflow-clip selection:bg-accent selection:text-white">
 
-      {/* Hero Section */}
-      <section className="relative min-h-[100dvh] flex items-center justify-center pt-20 overflow-hidden bg-black">
-        {/* Background Video & Overlays */}
-        <div className="absolute inset-0 z-0">
+      {/* Massive Typography Hero Section for Mobile */}
+      <section className="relative min-h-[100dvh] flex flex-col justify-center pt-24 pb-20 px-4 sm:px-6">
+        
+        {/* Mobile Background Logo at 30-40% opacity */}
+        <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none">
           <img 
             src="/logo.png" 
-            alt="Hero background logo" 
-            className="w-full h-full object-contain p-8 md:p-12 pointer-events-none opacity-30"
+            alt="Arcvex Logo" 
+            className="w-[80%] max-w-[300px] object-contain opacity-35"
           />
-          {/* Dark overlay for text readability */}
-          <div className="absolute inset-0 bg-black/45" />
-          {/* Bottom gradient fade into background */}
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background" />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col items-center text-center">
+        <div className="relative z-10 w-full flex flex-col items-start mt-10">
           <motion.div
-            initial={{ opacity: 1, y: 50 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           >
-            <p className="text-white font-serif text-xl md:text-2xl tracking-wide mb-3">
-              We build digital futures
+            <p className="text-foreground/60 font-serif italic text-xl tracking-wide mb-4">
+              We build digital futures.
             </p>
-            <h1 className="text-[clamp(3rem,13vw,10rem)] leading-[0.9] font-extrabold text-white tracking-tighter mb-8">
+            {/* The Logo Animation was requested to be removed from Nav and Left only as ARCVEX, which we did in Header.jsx */}
+            <h1 className="text-[clamp(4rem,20vw,7rem)] leading-[0.85] font-extrabold tracking-tighter mb-8 -ml-1 text-foreground">
               ARCVEX<span className="text-accent">.</span>
             </h1>
-            <p className="max-w-4xl mx-auto text-lg md:text-2xl text-white/70 mb-12 leading-relaxed font-serif" style={{ fontFamily: '"PT Serif", serif' }}>
-              We build custom websites, business software, mobile applications, AI-powered bots, and intuitive digital experiences that help businesses streamline operations, strengthen their online presence, and grow with confidence.
-            </p>
-            <a
-              href="#work"
-              className="relative overflow-hidden inline-flex items-center px-8 py-4 bg-accent text-accent-foreground font-bold rounded-2xl transition-smooth group hover:glow-shadow"
-            >
-              <span className="absolute inset-0 w-full h-full bg-white origin-left transform scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100"></span>
-              <span className="relative z-10 flex items-center group-hover:text-black transition-colors duration-300">
-                <span className="mr-2">Explore Our Work</span>
-                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-              </span>
-            </a>
           </motion.div>
+          
+          <div className="flex flex-col gap-8 items-start w-full mt-4">
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="text-lg sm:text-xl text-foreground/80 leading-[1.4] max-w-lg font-serif" 
+              style={{ fontFamily: '"Instrument Serif", serif' }}
+            >
+              We engineer custom software, beautiful web platforms, and intelligent AI systems that help businesses scale with precision.
+            </motion.p>
+
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.3, ease: [0.32, 0.72, 0, 1] }}
+              className="w-full sm:w-auto"
+            >
+              <a
+                href="#work"
+                className="group w-full relative inline-flex items-center justify-center px-8 py-4 bg-foreground text-background rounded-full font-medium overflow-hidden active:scale-[0.98] transition-spring shadow-xl"
+              >
+                <span className="relative z-10 flex items-center gap-3 text-lg">
+                  Explore Our Work
+                  <div className="w-8 h-8 rounded-full bg-background/20 flex items-center justify-center group-hover:translate-x-1 group-hover:-translate-y-[1px] group-hover:scale-105 transition-spring">
+                    <ArrowRight size={16} strokeWidth={2.5} />
+                  </div>
+                </span>
+              </a>
+            </motion.div>
+          </div>
         </div>
-
-
       </section>
 
-
-
       {/* About Section */}
-      <section id="about" className="py-24 bg-background relative">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
-            {/* Visuals */}
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-              className="h-full min-h-[400px] rounded-2xl bg-muted border border-border/50 overflow-hidden relative"
-            >
+      <section id="about" className="py-24 relative px-4 sm:px-6">
+        <div className="grid grid-cols-1 gap-6">
+          {/* Visuals - Bento Box */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="h-[350px] double-bezel-outer p-2"
+          >
+            <div className="double-bezel-inner w-full h-full overflow-hidden relative">
               <img
                 src="/about-image.webp"
                 alt="ArcVex Workspace"
                 loading="lazy"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transition-slower hover:scale-105"
               />
-            </motion.div>
+            </div>
+          </motion.div>
 
-            {/* Copy */}
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-              className="flex flex-col justify-center space-y-6"
-            >
-              <div className="border-b border-accent/40 pb-4 mb-2">
-                <p className="text-accent font-serif uppercase tracking-[0.25em] text-xl md:text-2xl">
-                  Who We Are
+          {/* Copy - Side Bento Box */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+            className="flex flex-col justify-center space-y-6 bg-black/5 p-8 rounded-3xl border border-black/5"
+          >
+            <div>
+              <span className="inline-block px-4 py-1.5 rounded-full bg-accent/10 text-accent text-xs font-bold uppercase tracking-[0.2em] mb-4">
+                Who We Are
+              </span>
+              <h2 className="text-3xl font-extrabold tracking-tight text-foreground leading-[1.1] mb-5">
+                Engineering Digital Solutions.
+              </h2>
+              <div className="space-y-4">
+                <p className="text-lg text-foreground/70 leading-relaxed font-serif" style={{ fontFamily: '"Instrument Serif", serif' }}>
+                  ArcVex is a technology-driven software agency dedicated to building innovative digital solutions for modern businesses. We specialize in web development, custom software applications, mobile app development, UI/UX design, search engine optimization (SEO), and AI-powered bot development.
+                </p>
+                <p className="text-lg text-foreground/70 leading-relaxed font-serif" style={{ fontFamily: '"Instrument Serif", serif' }}>
+                  By combining technical expertise, creativity, and a client-first approach, we transform ideas into reliable, high-quality solutions that help businesses grow with confidence.
                 </p>
               </div>
-              <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white mb-6">
-                Engineering Digital Solutions That Power Business Growth.
-              </h2>
-              <p className="text-xl text-muted-foreground leading-relaxed font-serif" style={{ fontFamily: '"PT Serif", serif' }}>
-                ArcVex is a technology-driven software agency dedicated to building innovative digital solutions for modern businesses. We specialize in web development, custom software applications, mobile app development, UI/UX design, search engine optimization (SEO), and AI-powered bot development. Every solution we create is designed to simplify business operations, enhance user experiences, and help our clients grow with confidence.
-              </p>
-              <p className="text-xl text-muted-foreground leading-relaxed font-serif" style={{ fontFamily: '"PT Serif", serif' }}>
-                ArcVex is powered by a passionate team of innovators dedicated to building exceptional digital products. By combining technical expertise, creativity, and a client-first approach, we transform ideas into reliable, high-quality solutions that help businesses grow with confidence.
-              </p>
-            </motion.div>
-          </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Services Section */}
-      <section id="services" className="py-24 bg-background relative">
-        <div className="max-w-7xl mx-auto px-6 py-24">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-            className="text-center mb-16"
-          >
-            <div className="w-full border-b border-accent/40 pb-4 mb-8">
-              <p className="text-accent font-serif uppercase tracking-[0.25em] text-xl md:text-2xl">
-                Our Services
-              </p>
-            </div>
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white mb-12">
-              Everything You Need to Build, Scale & Grow.
-            </h2>
-          </motion.div>
-          <div className="flex flex-wrap justify-center gap-6">
-            {services.map((service, index) => (
-              <div key={index} className="w-full md:w-[calc(50%-0.75rem)] lg:w-[calc(33.333333%-1rem)] flex">
-                <ServiceCard index={index} {...service} />
-              </div>
-            ))}
-          </div>
+      <section id="services" className="py-24 relative px-4 sm:px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          className="mb-12"
+        >
+          <span className="inline-block px-4 py-1.5 rounded-full bg-black/5 text-foreground/80 text-xs font-bold uppercase tracking-[0.2em] mb-4">
+            Our Capabilities
+          </span>
+          <h2 className="text-4xl font-extrabold tracking-tighter text-foreground leading-[1.1]">
+            Build, Scale & Grow.
+          </h2>
+        </motion.div>
+        
+        <div className="flex flex-col border-b border-black/10">
+          {services.map((service, index) => (
+            <motion.div 
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: (index % 3) * 0.1 }}
+            >
+              <ServiceCard 
+                index={index} 
+                {...service} 
+                isActive={activeService === index}
+                onHover={() => setActiveService(index)}
+              />
+            </motion.div>
+          ))}
         </div>
       </section>
 
       {/* Standard Vertical Work Section for Mobile */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto" id="work">
-        <div className="text-center mb-16">
-          <div className="w-full border-b border-accent/40 pb-4 mb-8">
-             <p className="text-accent font-serif uppercase tracking-[0.25em] text-xl md:text-2xl">
-               Our Work
-             </p>
-          </div>
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white mb-6">
+      <section className="py-24 px-4 sm:px-6" id="work">
+        <div className="mb-12">
+          <span className="inline-block px-4 py-1.5 rounded-full bg-black/5 text-foreground/80 text-xs font-bold uppercase tracking-[0.2em] mb-4">
+            Our Work
+          </span>
+          <h2 className="text-4xl font-extrabold tracking-tighter text-foreground leading-[1.1] mb-4">
             Everything we build.
           </h2>
-          <p className="text-lg text-white/70 max-w-2xl mx-auto">
+          <p className="text-lg text-foreground/70 max-w-2xl">
             Discover how we've helped businesses transform their digital presence and streamline operations.
           </p>
         </div>
-        <div className="flex flex-col gap-12">
+        <div className="flex flex-col gap-8">
           {projects.map((project, index) => (
             <div key={index} className="w-full flex">
                <ProjectCard 
@@ -352,273 +360,233 @@ export default function MobileHomePage() {
         </div>
       </section>
 
-      {/* Support & Maintenance Section */}
-      <section id="support" className="py-24 bg-background relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6 relative z-10">
+      {/* Support Section */}
+      <section id="support" className="py-24 relative px-4 sm:px-6 overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          className="mb-12"
+        >
+          <span className="inline-block px-4 py-1.5 rounded-full bg-accent/10 text-accent text-xs font-bold uppercase tracking-[0.2em] mb-4">
+            Assurance
+          </span>
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tighter text-foreground mb-4">
+            6-Month Complimentary Support
+          </h2>
+          <p className="text-lg text-foreground/70 leading-relaxed font-serif" style={{ fontFamily: '"Instrument Serif", serif' }}>
+            Every ArcVex project includes 6 months of complimentary technical support to keep your application stable, reliable, and smooth.
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 gap-6">
           <motion.div
-            initial={{ opacity: 0, y: 50 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-            className="text-center mb-16"
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="double-bezel-outer"
           >
-            <div className="w-full border-b border-accent/40 pb-4 mb-8">
-              <p className="text-accent font-serif uppercase tracking-[0.25em] text-xl md:text-2xl">
-                Support & Maintenance
-              </p>
+            <div className="double-bezel-inner h-full p-8 flex flex-col justify-between">
+              <div>
+                <div className="w-14 h-14 rounded-2xl bg-accent/10 flex items-center justify-center mb-6">
+                  <CheckCircle className="w-7 h-7 text-accent" />
+                </div>
+                <h3 className="text-xl font-extrabold text-foreground mb-6 tracking-tight">Included for 6 Months</h3>
+                <ul className="space-y-4">
+                  {['Bug Fixes & Maintenance', 'Technical Assistance', 'Email & Remote Support', 'Issue Monitoring'].map((text, i) => (
+                    <li key={i} className="flex items-start space-x-3 text-base text-foreground/80">
+                      <CheckCircle className="w-5 h-5 text-accent shrink-0 mt-0.5" />
+                      <span>{text}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white mb-6">
-              6-Month Complimentary Support
-            </h2>
-            <p className="max-w-3xl mx-auto text-xl text-muted-foreground leading-relaxed font-serif" style={{ fontFamily: '"PT Serif", serif' }}>
-              Every ArcVex project includes 6 months of complimentary technical support to help keep your application stable, reliable, and running smoothly after launch.
-            </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {/* Card 1 */}
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-              className="bg-card/40 border border-accent/50 hover:border-accent p-8 md:p-10 rounded-2xl backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(149,252,137,0.15)] group"
-            >
-              <div className="flex items-center space-x-4 mb-8">
-                <CheckCircle className="w-8 h-8 text-accent" />
-                <h3 className="text-2xl font-bold text-white group-hover:text-accent transition-colors">Included for 6 Months</h3>
-              </div>
-
-              <ul className="space-y-5">
-                {[
-                  'Bug Fixes & Maintenance',
-                  'Technical Assistance',
-                  'Email & Remote Support',
-                  'Issue Monitoring & Troubleshooting'
-                ].map((text, i) => (
-                  <li key={i} className="flex items-start space-x-3 text-lg text-white/80">
-                    <CheckCircle className="w-6 h-6 text-accent shrink-0 mt-0.5" />
-                    <span>{text}</span>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-
-            {/* Card 2 */}
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
-              className="bg-card/40 border border-white/10 hover:border-accent/50 p-8 md:p-10 rounded-2xl backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(149,252,137,0.1)] group"
-            >
-              <div className="flex items-center space-x-4 mb-8">
-                <ShieldCheck className="w-8 h-8 text-white/80 group-hover:text-accent transition-colors" />
-                <div>
-                  <h3 className="text-2xl font-bold text-white group-hover:text-accent transition-colors">Additional Services</h3>
-                </div>
-              </div>
-
-              <ul className="space-y-5">
-                {[
-                  { icon: ShieldCheck, text: 'Security Updates' },
-                  { icon: Zap, text: 'Performance Optimization' },
-                  { icon: RefreshCw, text: 'Platform & Technology Updates' },
-                  { icon: Rocket, text: 'Feature Enhancements' }
-                ].map((item, i) => (
-                  <li key={i} className="flex items-start space-x-3 text-lg text-white/60 group-hover:text-white/80 transition-colors">
-                    <item.icon className="w-6 h-6 text-accent/70 group-hover:text-accent shrink-0 mt-0.5 transition-colors" />
-                    <span>{item.text}</span>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          </div>
-
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
-            className="text-center mt-12"
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+            className="double-bezel-outer"
           >
-            <p className="text-sm text-white/40 max-w-2xl mx-auto">
-              Complimentary support includes maintenance, bug fixes, and technical assistance for the first 6 months after project delivery. Additional services such as feature enhancements, security improvements, performance optimization, and platform upgrades are available upon request. Contact <a href="mailto:support@arcvex.in" className="text-accent hover:underline font-medium">support@arcvex.in</a> for assistance.
-            </p>
+            <div className="double-bezel-inner h-full p-8 flex flex-col justify-between">
+              <div>
+                <div className="w-14 h-14 rounded-2xl bg-black/5 flex items-center justify-center mb-6">
+                  <ShieldCheck className="w-7 h-7 text-foreground/80" />
+                </div>
+                <h3 className="text-xl font-extrabold text-foreground mb-6 tracking-tight">Additional Services</h3>
+                <ul className="space-y-4">
+                  {[
+                    { icon: ShieldCheck, text: 'Security Updates' },
+                    { icon: Zap, text: 'Performance Optimization' },
+                    { icon: RefreshCw, text: 'Platform Updates' },
+                    { icon: Rocket, text: 'Feature Enhancements' }
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-start space-x-3 text-base text-foreground/70">
+                      <item.icon className="w-5 h-5 text-foreground/50 shrink-0 mt-0.5" />
+                      <span>{item.text}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
           </motion.div>
         </div>
       </section>
 
+      {/* Contact Section */}
+      <section id="contact" className="py-24 relative px-4 sm:px-6 overflow-hidden">
+        <div className="double-bezel-outer p-1.5">
+          <div className="double-bezel-inner bg-foreground text-background p-8 sm:p-10 flex flex-col gap-12 relative overflow-hidden">
+            {/* Subtle light orb in the dark container */}
+            <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-accent/20 rounded-full blur-[80px] pointer-events-none transform translate-x-1/2 -translate-y-1/2" />
 
-      {/* Contact / Footer Section */}
-      <section id="contact" className="py-24 bg-background border-t border-border/50 relative overflow-hidden">
-        {/* Glow effect */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-primary/10 blur-[120px] rounded-full pointer-events-none" />
-
-        <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
             {/* Left Panel */}
             <motion.div
-              initial={{ opacity: 0, y: 50 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-              className="lg:col-span-5 flex flex-col justify-center"
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+              className="relative z-10"
             >
-              <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white mb-6 uppercase">
-                START THE <br /> <span className="text-primary">CONVERSATION.</span>
+              <h2 className="text-4xl font-extrabold tracking-tighter text-background mb-6 leading-[1.1]">
+                Let's Build <br /> <span className="text-accent">Together.</span>
               </h2>
-              <p className="text-xl text-muted-foreground leading-relaxed font-serif mb-8" style={{ fontFamily: '"PT Serif", serif' }}>
-                Every successful product starts with a simple conversation. Whether you need a business website, custom software, AI solutions, mobile applications, or automation, we're ready to understand your goals and deliver the right solution.
+              <p className="text-xl text-background/70 leading-relaxed font-serif mb-8" style={{ fontFamily: '"Instrument Serif", serif' }}>
+                Every successful product starts with a simple conversation. We're ready to understand your goals.
               </p>
 
-              <div className="space-y-6 mb-12">
+              <div className="space-y-6">
                 <div>
-                  <p className="text-sm font-semibold text-white/50 uppercase tracking-wider mb-2">Email</p>
-                  <a href="mailto:hello@arcvex.in" className="text-xl font-medium text-white hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded">
+                  <p className="text-xs font-bold text-background/50 uppercase tracking-[0.2em] mb-1">Email</p>
+                  <a href="mailto:hello@arcvex.in" className="text-xl font-medium text-background hover:text-accent transition-colors">
                     hello@arcvex.in
                   </a>
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-white/50 uppercase tracking-wider mb-2">Location</p>
-                  <p className="text-xl font-medium text-white">Coimbatore</p>
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-white/50 uppercase tracking-wider mb-2">Phone</p>
-                  <a href="tel:+919363778981" className="text-xl font-medium text-white hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded">
+                  <p className="text-xs font-bold text-background/50 uppercase tracking-[0.2em] mb-1">Phone</p>
+                  <a href="tel:+919363778981" className="text-xl font-medium text-background hover:text-accent transition-colors">
                     +91 93637 78981
                   </a>
+                </div>
+                
+                <div className="flex gap-4 pt-4">
+                  <SocialIcon href="https://instagram.com/arcvex" icon={Instagram} ariaLabel="Instagram" />
+                  <SocialIcon href="https://linkedin.com/company/arcvex" icon={Linkedin} ariaLabel="LinkedIn" />
+                  <SocialIcon href="https://x.com/arcvex" icon={XIcon} ariaLabel="X (Twitter)" />
                 </div>
               </div>
             </motion.div>
 
             {/* Right Panel (Form) */}
             <motion.div
-              initial={{ opacity: 0, y: 50 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-              className="lg:col-span-7 h-full"
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+              className="relative z-10 mt-4"
             >
-              <div className="bg-card/40 border border-border/50 p-8 md:p-10 rounded-2xl backdrop-blur-sm h-full flex flex-col">
-                <form className="space-y-6 flex flex-col flex-1" onSubmit={handleSubmit}>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <label htmlFor="name" className="text-sm font-medium text-white/80">Name</label>
-                      <input
-                        type="text"
-                        id="name"
-                        value={formData.name}
-                        onChange={handleInputChange}
-                        required
-                        className="w-full h-12 px-4 bg-background border border-border/80 rounded-lg text-white focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none focus-visible:border-transparent transition-all"
-                        placeholder="John Doe"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label htmlFor="email" className="text-sm font-medium text-white/80">Email</label>
-                      <input
-                        type="email"
-                        id="email"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        required
-                        className="w-full h-12 px-4 bg-background border border-border/80 rounded-lg text-white focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none focus-visible:border-transparent transition-all"
-                        placeholder="john@example.com"
-                      />
-                    </div>
-                  </div>
+              <form className="space-y-6" onSubmit={handleSubmit}>
+                <div className="space-y-6">
                   <div className="space-y-2">
-                    <label htmlFor="subject" className="text-sm font-medium text-white/80">Subject</label>
+                    <label htmlFor="name" className="text-sm font-medium text-background/70">Name</label>
                     <input
-                      type="text"
-                      id="subject"
-                      value={formData.subject}
-                      onChange={handleInputChange}
+                      id="name"
                       required
-                      className="w-full h-12 px-4 bg-background border border-border/80 rounded-lg text-white focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none focus-visible:border-transparent transition-all"
-                      placeholder="How can we help?"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      className="w-full bg-background/5 border-b border-background/20 px-0 py-3 text-background placeholder-background/30 focus:border-accent focus:outline-none transition-colors rounded-none"
+                      placeholder="John Doe"
                     />
                   </div>
-                  <div className="space-y-2 flex flex-col flex-1">
-                    <label htmlFor="message" className="text-sm font-medium text-white/80">Message</label>
-                    <textarea
-                      id="message"
-                      value={formData.message}
-                      onChange={handleInputChange}
+                  <div className="space-y-2">
+                    <label htmlFor="email" className="text-sm font-medium text-background/70">Email</label>
+                    <input
+                      id="email"
+                      type="email"
                       required
-                      className="w-full flex-1 min-h-[120px] p-4 bg-background border border-border/80 rounded-lg text-white focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none focus-visible:border-transparent transition-all resize-none"
-                      placeholder="Tell us about your project..."
-                    ></textarea>
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      className="w-full bg-background/5 border-b border-background/20 px-0 py-3 text-background placeholder-background/30 focus:border-accent focus:outline-none transition-colors rounded-none"
+                      placeholder="john@example.com"
+                    />
                   </div>
+                </div>
+                <div className="space-y-2">
+                  <label htmlFor="subject" className="text-sm font-medium text-background/70">Subject</label>
+                  <input
+                    id="subject"
+                    required
+                    value={formData.subject}
+                    onChange={handleInputChange}
+                    className="w-full bg-background/5 border-b border-background/20 px-0 py-3 text-background placeholder-background/30 focus:border-accent focus:outline-none transition-colors rounded-none"
+                    placeholder="How can we help?"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label htmlFor="message" className="text-sm font-medium text-background/70">Message</label>
+                  <textarea
+                    id="message"
+                    required
+                    value={formData.message}
+                    onChange={handleInputChange}
+                    rows={3}
+                    className="w-full bg-background/5 border-b border-background/20 px-0 py-3 text-background placeholder-background/30 focus:border-accent focus:outline-none transition-colors rounded-none resize-none"
+                    placeholder="Tell us about your project..."
+                  />
+                </div>
+                
+                <div className="pt-2 flex justify-center w-full overflow-hidden">
+                  <Turnstile
+                    siteKey="1x00000000000000000000AA"
+                    key={turnstileKey}
+                    onSuccess={(token) => setFormData(prev => ({ ...prev, captchaToken: token }))}
+                    onError={() => setSubmitStatus({ type: 'error', message: 'Captcha verification failed. Please try again.' })}
+                    options={{
+                      theme: 'dark',
+                    }}
+                  />
+                </div>
 
-                  <div className="w-full pt-2 pb-1 flex justify-center">
-                    <div className="transition-all rounded-lg overflow-hidden flex justify-center items-center">
-                      {!navigator.userAgent.includes("ReactSnap") ? (
-                        <Turnstile
-                          key={turnstileKey}
-                          siteKey="0x4AAAAAADvlDxbG189yGJXi"
-                          options={{
-                            theme: 'dark'
-                          }}
-                          onSuccess={(token) => {
-                            setSubmitStatus({ type: '', message: '' });
-                            setFormData(prev => ({ ...prev, captchaToken: token }));
-                          }}
-                          onError={(errorCode) => {
-                            console.error('Turnstile Error:', errorCode);
-                            setSubmitStatus({ type: 'error', message: `Captcha error: ${errorCode || 'Unknown error'}. Check console or ensure the Site Key allows localhost.` });
-                          }}
-                          onExpire={() => setFormData(prev => ({ ...prev, captchaToken: '' }))}
-                        />
-                      ) : (
-                        <div className="p-4 text-sm text-white/50 text-center">Turnstile Captcha (Disabled during pre-rendering)</div>
-                      )}
-                    </div>
-                  </div>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="group relative w-full inline-flex items-center justify-center px-8 py-4 bg-background text-foreground rounded-full font-medium overflow-hidden active:scale-[0.98] transition-spring disabled:opacity-70 mt-4"
+                >
+                  <span className="relative z-10 flex items-center gap-3">
+                    {isSubmitting ? 'Sending...' : 'Send Message'}
+                    {!isSubmitting && (
+                      <div className="w-8 h-8 rounded-full bg-foreground/10 flex items-center justify-center group-hover:translate-x-1 group-hover:-translate-y-[1px] group-hover:scale-105 transition-spring">
+                        <ArrowRight size={16} strokeWidth={2.5} />
+                      </div>
+                    )}
+                  </span>
+                </button>
 
-                  {submitStatus.message && (
-                    <div className={`p-4 rounded-lg ${submitStatus.type === 'success' ? 'bg-green-500/20 text-green-200' : 'bg-red-500/20 text-red-200'}`}>
-                      {submitStatus.message}
-                    </div>
-                  )}
-
-                  <button
-                    type="submit"
-                    disabled={isSubmitting || !formData.captchaToken}
-                    className={`relative overflow-hidden w-full h-12 bg-accent text-accent-foreground font-semibold rounded-lg transition-smooth focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background group hover:glow-shadow ${(isSubmitting || !formData.captchaToken) ? 'opacity-70 cursor-not-allowed' : 'cursor-pointer'}`}
+                {submitStatus.message && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className={`p-4 rounded-xl text-center text-sm font-medium ${submitStatus.type === 'success' ? 'bg-accent/20 text-accent' : 'bg-destructive/20 text-destructive'}`}
                   >
-                    {(!isSubmitting && formData.captchaToken) && <span className="absolute inset-0 w-full h-full bg-white origin-left transform scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100"></span>}
-                    <span className="relative z-10 group-hover:text-black transition-colors duration-300">
-                      {isSubmitting ? 'Submitting...' : 'Submit'}
-                    </span>
-                  </button>
-                </form>
-              </div>
+                    {submitStatus.message}
+                  </motion.div>
+                )}
+              </form>
             </motion.div>
           </div>
-
-          {/* Footer Legal Bar */}
-          <div className="border-t border-border/50 mt-24 pt-8">
-            <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-              <p className="text-muted-foreground text-sm">
-                &copy; {new Date().getFullYear()} ArcVex Agency. All rights reserved.
-              </p>
-              <div className="flex space-x-4">
-                <SocialIcon href="https://www.instagram.com/arcvex3/" icon={Instagram} ariaLabel="Instagram" />
-                <SocialIcon href="https://www.linkedin.com/in/arcvex-505ba041b" icon={Linkedin} ariaLabel="LinkedIn" />
-                <SocialIcon href="https://x.com/ARCVEX3" icon={XIcon} ariaLabel="X" />
-              </div>
-            </div>
-          </div>
+        </div>
+        
+        <div className="mt-8 text-center pb-8">
+          <p className="text-xs text-foreground/40 font-medium">
+            &copy; {new Date().getFullYear()} ArcVex Studio. All rights reserved.
+          </p>
         </div>
       </section>
-
-      <ProjectModal
-        project={selectedProject}
-        isOpen={!!selectedProject}
-        onClose={() => setSelectedProject(null)}
-      />
     </main>
   );
 }

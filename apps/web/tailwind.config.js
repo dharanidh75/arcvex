@@ -21,7 +21,7 @@ export default {
         destructive: "rgb(var(--destructive) / <alpha-value>)",
       },
       fontFamily: {
-        serif: ['"PT Serif"', 'serif'],
+        serif: ['"Instrument Serif"', 'serif'],
       },
       animation: {
         marquee: "marquee 30s linear infinite",

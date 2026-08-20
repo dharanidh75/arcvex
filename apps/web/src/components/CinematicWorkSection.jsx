@@ -1,122 +1,102 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
-
-const CrossfadeSlide = ({ project, i, total, progress }) => {
-  const step = 1 / total;
-  
-  // Calculate precise crossfade timings based on scroll progress
-  let input, output, scaleOutput;
-  
-  if (i === 0) {
-    input = [0, step * 0.8, step];
-    output = [1, 1, 0];
-    scaleOutput = [1, 1.02, 1.05];
-  } else if (i === total - 1) {
-    input = [(i - 0.2) * step, i * step, 1];
-    output = [0, 1, 1];
-    scaleOutput = [0.95, 1, 1.02];
-  } else {
-    input = [(i - 0.2) * step, i * step, (i + 0.8) * step, (i + 1) * step];
-    output = [0, 1, 1, 0];
-    scaleOutput = [0.95, 1, 1.02, 1.05];
-  }
-
-  const opacity = useTransform(progress, input, output);
-  const scale = useTransform(progress, input, scaleOutput);
-
-  return (
-    <motion.div 
-      style={{ opacity }} 
-      className="absolute inset-0 w-full h-full flex items-center will-change-transform"
-    >
-      <motion.div style={{ scale }} className="absolute inset-0 w-full h-full z-0 origin-center will-change-transform">
-        <video 
-          src={project.video} 
-          autoPlay loop muted playsInline 
-          className="w-full h-full object-cover" 
-        />
-      </motion.div>
-      
-      {/* Cinematic Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/40 to-transparent z-10 pointer-events-none" />
-      
-      {/* Content */}
-      <div className="relative z-20 max-w-7xl mx-auto px-6 w-full flex flex-col items-start text-left">
-        <p className="text-accent uppercase tracking-[0.3em] font-medium text-xs md:text-sm mb-4 drop-shadow-md">
-           {project.category}
-        </p>
-        <h3 className="text-white text-4xl md:text-6xl lg:text-8xl font-bold tracking-tighter leading-[1] mb-6 drop-shadow-2xl">
-           {project.title}
-        </h3>
-        {project.description && (
-          <p className="text-white/80 text-lg md:text-2xl font-serif leading-relaxed mb-10 max-w-2xl drop-shadow-md" style={{ fontFamily: '"PT Serif", serif' }}>
-            {project.description[0]}
-          </p>
-        )}
-        <div className="flex flex-wrap gap-3">
-          {project.features.map((feat, idx) => (
-            <span key={idx} className="px-4 py-2 rounded-full bg-black/40 backdrop-blur-xl border border-white/10 text-sm text-white/90 shadow-2xl tracking-wide">
-              {feat}
-            </span>
-          ))}
-        </div>
-      </div>
-    </motion.div>
-  );
-};
+import React from 'react';
+import { motion } from 'framer-motion';
 
 export default function CinematicWorkSection({ projects }) {
-  const container = useRef(null);
-  const [isInView, setIsInView] = useState(false);
-
-  useEffect(() => {
-    // Only mount heavy videos when section is near the viewport
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsInView(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin: '800px' } 
-    );
-    
-    if (container.current) {
-      observer.observe(container.current);
-    }
-    
-    return () => observer.disconnect();
-  }, []);
-
-  const { scrollYProgress } = useScroll({
-    target: container,
-    offset: ['start start', 'end end']
-  });
-
   return (
     <section 
-      ref={container} 
-      className="relative w-full bg-black font-['Plus_Jakarta_Sans']" 
-      style={{ height: `${projects.length * 100}vh` }} 
+      className="relative w-full bg-background min-h-screen py-24 md:py-48 overflow-hidden" 
       id="work"
     >
-      <div className="sticky top-0 h-screen w-full overflow-hidden">
-        
-        {/* Pinned Title Layer */}
-        <div className="absolute top-12 left-12 z-50 pointer-events-none">
-          <h2 className="text-white/50 text-xl font-bold tracking-[0.2em] uppercase">Work</h2>
-        </div>
+      {/* Exaggerated Minimalism Header */}
+      <div className="max-w-[1600px] mx-auto px-6 md:px-12 lg:px-24 mb-24 md:mb-40">
+        <p className="text-accent uppercase tracking-[0.3em] font-bold text-xs md:text-sm mb-6 ml-2">
+          Featured Case Studies
+        </p>
+        <h2 className="text-[clamp(3.5rem,10vw,12rem)] font-black tracking-[-0.05em] text-foreground leading-[0.8] uppercase max-w-5xl">
+          Proven <br/> Results.
+        </h2>
+        <p className="text-foreground/60 text-lg md:text-2xl max-w-2xl mt-12 font-medium">
+          We don't just build beautiful interfaces; we engineer digital products that drive measurable business growth and user engagement.
+        </p>
+      </div>
 
-        {isInView && projects.map((project, i) => (
-          <CrossfadeSlide 
-            key={i} 
-            project={project} 
-            i={i} 
-            total={projects.length} 
-            progress={scrollYProgress} 
-          />
-        ))}
+      {/* Alternating Feature Layout (Client-Focused) */}
+      <div className="flex flex-col w-full">
+        {projects.map((project, i) => {
+          const isEven = i % 2 === 0;
 
+          return (
+            <div 
+              key={i}
+              className={`flex flex-col md:flex-row w-full items-stretch min-h-[80vh] border-t border-foreground/10 group ${
+                !isEven ? 'md:flex-row-reverse' : ''
+              }`}
+            >
+              {/* Text & Metrics Column */}
+              <div className="w-full md:w-1/2 flex flex-col justify-center p-8 md:p-16 lg:p-24 xl:p-32 bg-background transition-colors duration-500 group-hover:bg-foreground/[0.02]">
+                <div className="flex flex-col">
+                  {/* Category & Number */}
+                  <div className="flex items-center justify-between mb-8">
+                    <span className="text-accent font-bold tracking-widest uppercase text-sm">
+                      {project.category}
+                    </span>
+                    <span className="text-foreground/20 font-black text-4xl">
+                      0{i + 1}
+                    </span>
+                  </div>
+
+                  {/* Massive Title */}
+                  <h3 className="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-foreground leading-[1.1] mb-8">
+                    {project.title}
+                  </h3>
+
+                  {/* Client-Focused Metrics / Description */}
+                  <p className="text-foreground/70 text-lg md:text-xl leading-relaxed mb-10 max-w-xl">
+                    {project.description || "Delivered a comprehensive digital transformation that streamlined user workflows, enhanced engagement metrics, and established a scalable foundation for future growth."}
+                  </p>
+
+                  {/* Tags */}
+                  <div className="flex flex-wrap gap-3 mb-12">
+                    {project.features.map((feat, idx) => (
+                      <span key={idx} className="px-4 py-2 rounded-full border border-foreground/20 text-xs font-semibold text-foreground/80 tracking-wide uppercase">
+                        {feat}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* CTA */}
+                  <button className="self-start flex items-center gap-4 text-foreground font-bold text-sm tracking-widest uppercase group/btn">
+                    <span className="border-b-2 border-transparent group-hover/btn:border-accent transition-colors pb-1">Read Case Study</span>
+                    <span className="w-8 h-8 rounded-full border border-foreground/20 flex items-center justify-center group-hover/btn:bg-accent group-hover/btn:border-accent group-hover/btn:text-white transition-all">
+                      →
+                    </span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Video Column - Visible by default for clients! */}
+              <div className="w-full md:w-1/2 relative h-[50vh] md:h-auto overflow-hidden bg-foreground/5">
+                <motion.div 
+                  className="absolute inset-0 w-full h-full"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <video 
+                    src={project.video} 
+                    autoPlay 
+                    loop 
+                    muted 
+                    playsInline 
+                    className="w-full h-full object-cover"
+                  />
+                  {/* Subtle gradient overlay to ensure the border feels cohesive */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
+                </motion.div>
+              </div>
+
+            </div>
+          );
+        })}
       </div>
     </section>
   );
